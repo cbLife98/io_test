@@ -4,7 +4,14 @@ import 'dart:async';
 import 'dart:io';
 
 
-void main(){
+void main() async {
+
+var data =  await readData();
+if (data != null){
+  String message = await readData();
+  print(message);
+}
+
   runApp(MaterialApp(
     title: "IO",
     home: new Home(),
@@ -17,6 +24,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  var _enterDataField = new TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,10 +35,50 @@ class _HomeState extends State<Home> {
         title: new Text('Read/Write'),
         centerTitle: true,
         backgroundColor: Colors.greenAccent,
-        
+      ),
+      body: new Container(
+        padding: const EdgeInsets.all(13.4),
+        alignment: Alignment.topCenter,
+        child: new ListTile(
+          title: new TextField(
+            controller: _enterDataField,
+            decoration: new InputDecoration(
+              labelText: "Write Something",
+            ),
+
+          ),
+          subtitle: new FlatButton(
+              onPressed: () {
+                writeData(_enterDataField.text);
+              },
+              child: new Column(
+                children: <Widget>[
+                  new Text('Save Data'),
+                  new Padding(padding: new EdgeInsets.all(14.5)),
+                  new FutureBuilder(
+                      future: readData(),
+                      builder: (BuildContext context,AsyncSnapshot<String> data){
+                        if (data.hasData != null){
+                          return new Text(data.data.toString(),
+                            style: new TextStyle(
+                              color: Colors.white
+                            ),
+                          );
+
+                        }else{
+                          return new Text("No data saved!!");
+                        }
+                      }
+                  ),
+                ],
+              )
+          ),
+        ),
       ),
     );
   }
+}
+
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -56,4 +107,4 @@ class _HomeState extends State<Home> {
   }
 
 
-}
+
