@@ -1,8 +1,3 @@
 # io_test
 
-A new Flutter application.
-
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+to show basic read and write functions tpo the file 
